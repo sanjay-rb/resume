@@ -23,22 +23,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install latest md-to-pdf
-        run: npm install -g md-to-pdf@latest
-
       - name: Install Chromium dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk-bridge2.0-0 \
-            libgtk-3-0 \
-            libxss1 \
-            libasound2t64 \
-            libgbm1
-
-      - name: Install Chromium browser
-        run: sudo apt-get install -y chromium-browser
+          sudo apt install pandoc
+          sudo apt install texlive  # For LaTeX-based PDF generation
+          sudo apt install wkhtmltopdf
 
       - name: Convert all md to pdf (GitHub style)
         env:
@@ -46,8 +35,7 @@ jobs:
           PUPPETEER_ARGS: "--no-sandbox"
         run: |
           for file in $(find . -type f -name "*.md" ! -name "*.pdf.md"); do
-            echo "md-to-pdf \"$file\" --stylesheet github-markdown-css \"${file%.md}.pdf\""
-            md-to-pdf "$file" --stylesheet github-markdown-css "${file%.md}.pdf"
+            pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf
           done
 
       # - name: Set up Python
