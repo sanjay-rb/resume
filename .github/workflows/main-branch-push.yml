@@ -27,10 +27,12 @@ jobs:
         run: npm install -g md-to-pdf
 
       - name: Convert all md to pdf (GitHub style)
+        env:
+          PUPPETEER_ARGS: "--no-sandbox"
         run: |
           for file in $(find . -type f -name "*.md"); do
-            echo "md-to-pdf \"$file\" --stylesheet github-markdown-css --no-sandbox \"${file%.md}.pdf\""
-            md-to-pdf "$file" --stylesheet github-markdown-css --no-sandbox "${file%.md}.pdf"
+            echo "md-to-pdf \"$file\" --stylesheet github-markdown-css \"${file%.md}.pdf\""
+            md-to-pdf "$file" --stylesheet github-markdown-css "${file%.md}.pdf"
           done
 
       # - name: Set up Python
