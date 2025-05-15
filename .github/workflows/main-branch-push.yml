@@ -30,12 +30,9 @@ jobs:
           sudo apt install wkhtmltopdf
 
       - name: Convert all md to pdf (GitHub style)
-        env:
-          PUPPETEER_EXECUTABLE_PATH: "/usr/bin/chromium-browser"
-          PUPPETEER_ARGS: "--no-sandbox"
         run: |
           for file in $(find . -type f -name "*.md" ! -name "*.pdf.md"); do
-            pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf
+            pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf -V geometry:margin=0.5in
           done
 
       # - name: Set up Python
