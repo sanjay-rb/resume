@@ -68,9 +68,5 @@ jobs:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
-            Your PDF(s) are ready:
-
-            Repository: ${{ github.repository }}
-
-            ${{ steps.pdf_urls.outputs.urls }}
+            Your Update Resumes are ready:
           document: "*.pdf"
