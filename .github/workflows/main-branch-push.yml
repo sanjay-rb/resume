@@ -41,7 +41,7 @@ jobs:
         env:
           PUPPETEER_ARGS: "--no-sandbox"
         run: |
-          for file in $(find . -type f -name "*.md"); do
+          for file in $(find . -type f -name "*.md" ! -name "*.pdf.md"); do
             echo "md-to-pdf \"$file\" --stylesheet github-markdown-css \"${file%.md}.pdf\""
             md-to-pdf "$file" --stylesheet github-markdown-css "${file%.md}.pdf"
           done
