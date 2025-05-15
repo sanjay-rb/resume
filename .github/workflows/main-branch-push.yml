@@ -37,8 +37,12 @@ jobs:
             libasound2t64 \
             libgbm1
 
+      - name: Install Chromium browser
+        run: sudo apt-get install -y chromium-browser
+
       - name: Convert all md to pdf (GitHub style)
         env:
+          PUPPETEER_EXECUTABLE_PATH: "/usr/bin/chromium-browser"
           PUPPETEER_ARGS: "--no-sandbox"
         run: |
           for file in $(find . -type f -name "*.md" ! -name "*.pdf.md"); do
