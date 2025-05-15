@@ -34,7 +34,7 @@ jobs:
             libatk-bridge2.0-0 \
             libgtk-3-0 \
             libxss1 \
-            libasound2 \
+            libasound2t64 \
             libgbm1
 
       - name: Convert all md to pdf (GitHub style)
