@@ -43,21 +43,13 @@ jobs:
           git commit -m "Add/update PDF files from Markdown" || echo "No changes to commit"
           git push
 
-      - name: Send preview links to Telegram
+      - name: Send notification to Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          REPO: ${{ github.repository }}
         run: |
-          BRANCH=main
-          MSG="PDF Previews:\n"
-          for pdf in $(find . -type f -name "*.pdf"); do
-            # Remove leading ./ from path
-            pdf_path="${pdf#./}"
-            # Construct raw.githubusercontent.com link
-            url="https://github.com/${REPO}/blob/${BRANCH}/${pdf_path}?raw=true"
-            MSG="${MSG}${pdf_path}: ${url}\n"
-          done
+          REPO_URL="https://github.com/${GITHUB_REPOSITORY}"
+          MSG="Your PDF is ready. Please check the updated repository: ${REPO_URL}"
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${MSG}"
