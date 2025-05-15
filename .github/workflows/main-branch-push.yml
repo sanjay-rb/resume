@@ -43,17 +43,26 @@ jobs:
           git commit -m "Add/update PDF files from Markdown" || echo "No changes to commit"
           git push
 
-      - name: Send notification to Telegram
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Generate PDF URLs
+        id: pdf_urls
         run: |
-          REPO_URL="https://github.com/${GITHUB_REPOSITORY}"
-          PDF_FILES=$(find . -type f -name "*.pdf" | sed 's|^\./||')
-          MSG="Your PDF(s) are ready:%0A"
-          for pdf in $PDF_FILES; do
-            MSG="${MSG}${REPO_URL}/blob/main/${pdf}%0A"
+          urls=""
+          for file in $(find . -type f -name "*.pdf"); do
+            # Remove leading ./ from path
+            clean_file="${file#./}"
+            url="https://github.com/${{ github.repository }}/raw/main/${clean_file}"
+            urls="${urls}${url}\n"
           done
-          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-          -d chat_id="${TELEGRAM_CHAT_ID}" \
-          --data-urlencode "text=${MSG}"
+          echo -e "urls<<EOF\n${urls}EOF" >> $GITHUB_OUTPUT
+
+      - name: Send PDF URLs via Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            Your PDF(s) are ready:
+
+            Repository: ${{ github.repository }}
+
+            ${{ steps.pdf_urls.outputs.urls }}
