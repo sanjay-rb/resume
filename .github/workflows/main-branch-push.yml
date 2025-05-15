@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install md-to-pdf
-        run: npm install -g md-to-pdf
+      - name: Install latest md-to-pdf
+        run: npm install -g md-to-pdf@latest
 
       - name: Convert all md to pdf (GitHub style)
         env:
