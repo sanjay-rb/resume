@@ -25,29 +25,35 @@ jobs:
           python -m pip install --upgrade pip
           pip install pypandoc
 
-      - name: Find changed md files
-        id: changed-md
+      - name: Convert all md to pdf
         run: |
-          git fetch origin main
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$' || true
-        continue-on-error: true
-
-      - name: Convert md to pdf using Python
-        if: steps.changed-md.outputs.files != ''
-        run: |
-          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$'); do
+          for file in $(find . -type f -name "*.md"); do
             python -c "import pypandoc; pypandoc.convert_file('$file', 'pdf', outputfile='${file%.md}.pdf')"
           done
 
-      - name: Send PDFs to Telegram
-        if: steps.changed-md.outputs.files != ''
+      - name: Commit and push PDFs
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.pdf
+          git commit -m "Add/update PDF files from Markdown" || echo "No changes to commit"
+          git push
+
+      - name: Send preview links to Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REPO: ${{ github.repository }}
         run: |
-          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$'); do
-            pdf="${file%.md}.pdf"
-            if [ -f "$pdf" ]; then
-              curl -s -F document=@"$pdf" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument?chat_id=${TELEGRAM_CHAT_ID}"
-            fi
+          BRANCH=main
+          MSG="PDF Previews:\n"
+          for pdf in $(find . -type f -name "*.pdf"); do
+            # Remove leading ./ from path
+            pdf_path="${pdf#./}"
+            # Construct raw.githubusercontent.com link
+            url="https://github.com/${REPO}/blob/${BRANCH}/${pdf_path}?raw=true"
+            MSG="${MSG}${pdf_path}: ${url}\n"
           done
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${MSG}"
