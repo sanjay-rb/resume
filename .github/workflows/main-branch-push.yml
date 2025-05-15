@@ -29,8 +29,8 @@ jobs:
       - name: Convert all md to pdf (GitHub style)
         run: |
           for file in $(find . -type f -name "*.md"); do
-            echo "md-to-pdf \"$file\" --stylesheet github-markdown-css"
-            md-to-pdf "$file" --stylesheet github-markdown-css "${file%.md}.pdf"
+            echo "md-to-pdf \"$file\" --stylesheet github-markdown-css --launch-options.args='[\"--no-sandbox\"]' \"${file%.md}.pdf\""
+            md-to-pdf "$file" --stylesheet github-markdown-css --launch-options.args='["--no-sandbox"]' "${file%.md}.pdf"
           done
 
       # - name: Set up Python
