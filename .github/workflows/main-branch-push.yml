@@ -31,6 +31,7 @@ jobs:
       - name: Convert all md to pdf
         run: |
           for file in $(find . -type f -name "*.md"); do
+            echo "md2pdf "$file" --output "${file%.md}.pdf"""
             md2pdf "$file" --output "${file%.md}.pdf"
           done
 
