@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Chromium dependencies
+      - name: Install Dependencies
         run: |
           sudo apt install pandoc
           sudo apt install texlive  # For LaTeX-based PDF generation
@@ -31,26 +31,9 @@ jobs:
 
       - name: Convert all md to pdf (GitHub style)
         run: |
-          for file in $(find . -type f -name "*.md" ! -name "*.pdf.md"); do
+          for file in $(find . -type f -name "*.md"); do
             pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf -V geometry:margin=0.5in
           done
-
-      # - name: Set up Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: "3.x"
-
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install mdpdf
-
-      # - name: Convert all md to pdf
-      #   run: |
-      #     for file in $(find . -type f -name "*.md"); do
-      #       echo "md2pdf "$file" --output "${file%.md}.pdf""
-      #       mdpdf "$file" --output "${file%.md}.pdf"
-      #     done
 
       - name: Commit and push PDFs
         run: |
@@ -83,3 +66,4 @@ jobs:
             Repository: ${{ github.repository }}
 
             ${{ steps.pdf_urls.outputs.urls }}
+          document: "*.pdf"
