@@ -1,4 +1,5 @@
 # Sanjay RB
+
 **Email**: sanjaybabu618@gmail.com  
 **Phone**: +91 9442212906  
 **Location**: Coimbatore, Tamil Nadu  
@@ -24,13 +25,12 @@ Experienced DataOps/DevOps Engineer with 4+ years in automating data pipelines, 
 
 ## Professional Experience
 
-### System Engineer at Tata Consultancy Services  
+### System Engineer at Tata Consultancy Services
+
 #### Oct 2020 - Present
 
 - **DataOps & CI/CD Leadership**: Led a team to build scalable DataOps pipelines using Azure DevOps, reducing ETL/ELT deployment delays by 60% and automating early build issue detection by 75% with tools like SQLFluff, SonarQube, and Checkmarx.
-  
 - **Tooling & Automation**: Engineered custom static code analysis tools and automated regression testing for Informatica, reducing manual effort by over 90% and improving ETL deployment efficiency using AWS Glue and Lambda.
-  
 - **Security & Access Control**: Centralized access management for 50+ Jenkins pipelines and implemented AWS IAM, enhancing security and eliminating manual access control overhead.
 
 - **Migration & Performance Optimization**: Built Groovy-scripted tools to migrate from PowerCenter to IDMC, streamlining large-scale component transitions and integrating audit logging into Jenkins and ADO pipelines for improved compliance.
