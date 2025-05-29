@@ -1,10 +1,6 @@
-# Sanjay RB
+# **Sanjay RB**
 
-**Email**: sanjaybabu618@gmail.com  
-**Phone**: +91 9442212906  
-**Location**: Coimbatore, Tamil Nadu  
-**LinkedIn**: [https://www.linkedin.com/in/sanjayrb/](https://www.linkedin.com/in/sanjayrb/)  
-**Portfolio**: [https://sanjay-rb.github.io/](https://sanjay-rb.github.io/)
+📧 **Email**: [sanjaybabu618@gmail.com](mailto:sanjaybabu618@gmail.com) | 📱 **Phone**: +91 9442212906 | 📍 **Location**: Coimbatore, Tamil Nadu | 🔗 **LinkedIn**: [linkedin.com/in/sanjayrb](https://www.linkedin.com/in/sanjayrb/) | 🌐 **Portfolio**: [sanjay-rb.github.io](https://sanjay-rb.github.io/)
 
 ## Profile Summary
 
