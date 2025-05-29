@@ -39,7 +39,13 @@ jobs:
       - name: Convert all md to pdf (GitHub style)
         run: |
           for file in $(find . -type f -name "*.md"); do
-            pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf
+            # pandoc "$file" -o "${file%.md}.pdf" --css=github-markdown.css --pdf-engine=wkhtmltopdf
+            pandoc $file -o "${file%.md}.pdf" \
+              --from=gfm \
+              --to=html5 \
+              --css=github-markdown.css \
+              --pdf-engine=wkhtmltopdf \
+              -V geometry=margin=1in
           done
 
       - name: Commit and push PDFs
